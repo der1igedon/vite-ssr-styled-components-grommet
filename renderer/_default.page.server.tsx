@@ -4,11 +4,11 @@ export const passToClient = ["pageProps", "urlPathname"];
 
 import ReactDOMServer from "react-dom/server";
 import React from "react";
-import { PageShell } from "./PageShell";
 import { escapeInject, dangerouslySkipEscape } from "vike/server";
 import logoUrl from "./logo.svg";
 import type { PageContextServer } from "./types";
 import { ServerStyleSheet } from "styled-components";
+import { Grommet, Box, Text } from "grommet";
 
 async function render(pageContext: PageContextServer) {
   const { Page, pageProps } = pageContext;
@@ -19,10 +19,18 @@ async function render(pageContext: PageContextServer) {
   const sheet = new ServerStyleSheet();
   const pageHtml = ReactDOMServer.renderToString(
     sheet.collectStyles(
-      <PageShell pageContext={pageContext}>
-        <Page {...pageProps} />
-      </PageShell>
-    )
+      <Grommet
+        theme={{
+          global: {
+            colors: { doc: "#ff99cc" },
+          },
+        }}
+      >
+        <Box pad="large" background="doc">
+          <Text color="red">Debugtext</Text>
+        </Box>
+      </Grommet>,
+    ),
   );
 
   // See https://vike.dev/head
@@ -31,6 +39,7 @@ async function render(pageContext: PageContextServer) {
   const desc =
     (documentProps && documentProps.description) || "App using Vite + vike";
 
+  console.log("Found styles: ", sheet.getStyleTags());
   const documentHtml = escapeInject`<!DOCTYPE html>
     <html lang="en">
       <head>
