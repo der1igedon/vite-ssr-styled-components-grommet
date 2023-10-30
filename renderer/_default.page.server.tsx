@@ -26,7 +26,7 @@ async function render(pageContext: PageContextServer) {
           },
         }}
       >
-        
+        <Page {...pageProps} />
         <Box pad="large" background="doc">
           <Text color="red">Debugtext</Text>
         </Box>
